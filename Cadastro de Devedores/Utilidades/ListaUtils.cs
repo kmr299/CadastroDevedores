@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CadastroDevedores.Modelos;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -23,12 +24,27 @@ namespace CadastroDevedores.Utilidades
             //Imprime um cabeçalho
             ConsoleUtils.ImprimeCabecalho(" Todos clientes ({0})" + type.Name, lista.Count());
 
+            var linhas = new List<List<string>>();
+
+            var cabecalho = new List<string>();
             //Instancia uma lista de linhas com uma lista de colunas
-            var linhas = new List<List<string>>
+            foreach (var prop in props)
             {
-                //Adiciona o cabecalho no array
-                props.Select(x => x.Name).ToList()
-            };
+                var nomeAttributo = prop.GetCustomAttributes(typeof(Nome), true);
+
+                if(nomeAttributo != null && nomeAttributo.FirstOrDefault() != null)
+                {
+                    var descricao = ((Nome)nomeAttributo.FirstOrDefault()).Descricao;
+                    if (descricao != null)
+                    {
+                        cabecalho.Add(descricao);
+                        continue;
+                    }
+                }
+                cabecalho.Add(prop.Name);
+            }
+
+            linhas.Add(cabecalho);
 
             //Adiciona o conteudo no array
             foreach (var item in lista)
