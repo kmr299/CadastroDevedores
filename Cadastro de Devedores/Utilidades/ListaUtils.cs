@@ -37,8 +37,11 @@ namespace CadastroDevedores.Utilidades
                 for (var i = 0; i < props.Length; i++)
                 {
                     var prop = props[i];
-                    var valor = prop.GetValue(item).ToString();
-                    data.Add(valor);
+                    var value = prop.GetValue(item);
+                    if (value == null)
+                        data.Add(" -- ");
+                    else
+                        data.Add(value.ToString());
                 }
                 linhas.Add(data);
             }
